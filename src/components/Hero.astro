@@ -1,0 +1,75 @@
+---
+// src/components/Hero.astro
+interface Props {
+  groomName?: string;
+  brideName?: string;
+  weddingDate?: string;
+  heroImage?: string;
+  slogan?: string;
+  decorImage?: string;
+}
+
+const {
+  groomName = "Văn Âu",
+  brideName = "Kim Yến",
+  weddingDate = "19 . 07 . 2026",
+  heroImage = "/images/groom-bride.png",
+  slogan = "Hành trình vạn dặm bắt đầu từ một bước chân chung đôi.",
+  decorImage = "/images/invitation-decor.png"
+} = Astro.props;
+---
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-gold/10">
+  <img 
+    src={decorImage} 
+    class="absolute -bottom-10 -left-10 w-40 md:w-64 opacity-40 z-0 select-none pointer-events-none"
+    alt="decor"
+  />
+
+  <div class="container mx-auto px-6 z-10">
+    <div class="flex flex-col md:flex-row items-center gap-16">
+      
+      <div class="flex-1 text-center md:text-left space-y-6">
+        <h4 class="uppercase tracking-[0.3em] text-sm md:text-base text-wedding-navy/60 font-philosopher">
+          Chúng tôi cưới
+        </h4>
+        
+        <div class="py-8">
+          <h1 class="text-7xl md:text-9xl font-serif leading-none">
+            {groomName}
+          </h1>
+          <div class="flex items-center justify-center md:justify-start gap-4 my-2">
+            <div class="h-[1px] w-12 bg-wedding-gold"></div>
+            <span class="text-4xl font-serif text-wedding-gold">&</span>
+            <div class="h-[1px] w-12 bg-wedding-gold"></div>
+          </div>
+          <h1 class="text-7xl md:text-9xl font-serif leading-none">
+            {brideName}
+          </h1>
+        </div>
+
+        <div class="inline-block border-y border-wedding-navy/20 py-4 px-2">
+          <p class="text-2xl md:text-3xl tracking-tighter font-philosopher">
+            {weddingDate}
+          </p>
+        </div>
+
+        <p class="text-lg italic opacity-80 max-w-sm mx-auto md:mx-0 font-serif">
+          "{slogan}"
+        </p>
+      </div>
+
+      <div class="flex-1 relative group">
+        <div class="relative z-10 border-[16px] border-white shadow-2xl overflow-hidden rounded-t-[200px] aspect-[3/4]">
+          <img 
+            src={heroImage} 
+            alt="Wedding Portrait" 
+            class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+          />
+        </div>
+        <div class="absolute -inset-4 bg-wedding-gold/20 -z-10 rounded-t-[200px] translate-x-4 translate-y-4"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
