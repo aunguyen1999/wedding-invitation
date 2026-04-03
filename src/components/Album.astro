@@ -1,0 +1,86 @@
+---
+// src/components/Album.astro
+interface Props {
+  title?: string;
+  seeds?: string[];
+  limit?: number; // Số lượng hình muốn show ra ngoài
+}
+
+const { 
+  title = "Album Hình Cưới", 
+  seeds = [], 
+  limit = 9 
+} = Astro.props;
+
+// Tách mảng: 9 hình đầu để show, còn lại để ẩn
+const visibleSeeds = seeds.slice(0, limit);
+const hiddenSeeds = seeds.slice(limit);
+---
+
+<section class="py-24 bg-white">
+  <div class="container mx-auto px-6 max-w-6xl">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-serif text-wedding-navy tracking-[0.2em] uppercase">{title}</h2>
+      <div class="w-24 h-[1px] bg-wedding-gold mx-auto mt-4"></div>
+    </div>
+
+    <div class="pswp-gallery" id="wedding-gallery">
+      
+      <div class="columns-2 md:columns-3 gap-4 space-y-4">
+        {visibleSeeds.map((seed, index) => {
+          const width = 1200;
+          const height = index % 2 === 0 ? 1600 : 900;
+          const src = `https://picsum.photos/seed/${seed}/${width}/${height}`;
+          
+          return (
+            <a 
+              href={src} 
+              data-pswp-width={width} 
+              data-pswp-height={height} 
+              class="block relative group overflow-hidden rounded-sm shadow-sm"
+            >
+              <img src={src} alt="Wedding photo" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" />
+              {index === limit - 1 && hiddenSeeds.length > 0 && (
+                <div class="absolute inset-0 bg-wedding-navy/60 flex flex-col items-center justify-center text-wedding-cream">
+                  <span class="text-3xl font-serif">+{hiddenSeeds.length}</span>
+                  <span class="text-xs uppercase tracking-widest font-philosopher">Xem thêm</span>
+                </div>
+              )}
+            </a>
+          )
+        })}
+      </div>
+
+      <div class="hidden">
+        {hiddenSeeds.map((seed, index) => {
+          const width = 1200;
+          const height = (index + limit) % 2 === 0 ? 1600 : 900;
+          const src = `https://picsum.photos/seed/${seed}/${width}/${height}`;
+          
+          return (
+            <a 
+              href={src} 
+              data-pswp-width={width} 
+              data-pswp-height={height}
+            >
+              <img src={src} alt="Hidden wedding photo" />
+            </a>
+          )
+        })}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#wedding-gallery',
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+  });
+  lightbox.init();
+</script>
