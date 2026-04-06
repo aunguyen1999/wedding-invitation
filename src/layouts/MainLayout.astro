@@ -1,6 +1,7 @@
 ---
 // src/layouts/MainLayout.astro
 import '../styles/global.css';
+import 'aos/dist/aos.css';
 
 const { title = "Văn Âu & Kim Yến Wedding" } = Astro.props;
 ---
@@ -17,7 +18,18 @@ const { title = "Văn Âu & Kim Yến Wedding" } = Astro.props;
     <meta property="og:image" content="/images/og-image.jpg" />
   </head>
   <body class="bg-wedding-cream font-serif text-wedding-navy selection:bg-wedding-gold selection:text-wedding-navy">
-    <slot /> <footer class="py-10 text-center opacity-50 text-sm">
+    <slot />
+    <script>
+      import AOS from 'aos';
+      
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+        easing: 'ease-in-out-sine',
+      });
+    </script>
+    <footer class="py-10 text-center opacity-50 text-sm">
       <p>© 2026 Crafted with ❤️ by Au Nguyen</p>
     </footer>
   </body>

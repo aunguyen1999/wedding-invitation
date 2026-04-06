@@ -3,7 +3,7 @@
 interface Props {
   title?: string;
   seeds?: string[];
-  limit?: number; // Số lượng hình muốn show ra ngoài
+  limit?: number;
 }
 
 const { 
@@ -12,12 +12,11 @@ const {
   limit = 9 
 } = Astro.props;
 
-// Tách mảng: 9 hình đầu để show, còn lại để ẩn
 const visibleSeeds = seeds.slice(0, limit);
 const hiddenSeeds = seeds.slice(limit);
 ---
 
-<section class="py-24 bg-white">
+<section class="py-24 bg-white" data-aos="fade-up">
   <div class="container mx-auto px-6 max-w-6xl">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-serif text-wedding-navy tracking-[0.2em] uppercase">{title}</h2>

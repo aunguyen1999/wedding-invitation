@@ -25,7 +25,7 @@ const { events } = Astro.props;
 
       <div class="space-y-16">
         {events.map((event, index) => (
-          <div class={`relative flex flex-col md:flex-row items-start ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+          <div class={`relative flex flex-col md:flex-row items-start ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`} data-aos="flip-left">
             
             <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-wedding-gold rounded-full -translate-x-1/2 z-10 border-4 border-wedding-cream shadow-sm"></div>
 

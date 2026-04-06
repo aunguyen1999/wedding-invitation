@@ -1,26 +1,28 @@
 ---
+import { Image } from 'astro:assets';
+
 // src/components/Hero.astro
 interface Props {
-  groomName?: string;
-  brideName?: string;
-  weddingDate?: string;
-  heroImage?: string;
-  slogan?: string;
-  decorImage?: string;
+  groomName: string;
+  brideName: string;
+  weddingDate: string;
+  heroImage: ImageMetadata;
+  slogan: string;
+  decorImage: ImageMetadata;
 }
 
 const {
-  groomName = "Văn Âu",
-  brideName = "Kim Yến",
-  weddingDate = "19 . 07 . 2026",
-  heroImage = "/images/groom-bride.png",
-  slogan = "Hành trình vạn dặm bắt đầu từ một bước chân chung đôi.",
-  decorImage = "/images/invitation-decor.png"
+  groomName,
+  brideName,
+  weddingDate,
+  heroImage,
+  slogan,
+  decorImage
 } = Astro.props;
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-gold/10">
-  <img 
+  <Image 
     src={decorImage} 
     class="absolute -bottom-10 -left-10 w-40 md:w-64 opacity-40 z-0 select-none pointer-events-none"
     alt="decor"
@@ -61,7 +63,7 @@ const {
 
       <div class="flex-1 relative group">
         <div class="relative z-10 border-[16px] border-white shadow-2xl overflow-hidden rounded-t-[200px] aspect-[3/4]">
-          <img 
+          <Image 
             src={heroImage} 
             alt="Wedding Portrait" 
             class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
