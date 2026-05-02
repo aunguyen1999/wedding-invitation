@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import coverImg from '@images/hero-portrait.png';
+---
+
+<div id="wedding-cover" class="fixed inset-0 z-[100] flex items-center justify-center bg-wedding-navy overflow-hidden transition-all duration-1000 ease-in-out">
+  <div class="absolute inset-0 opacity-40">
+    <Image src={coverImg} alt="cover" class="w-full h-full object-cover blur-sm" />
+  </div>
+
+  <div class="relative z-10 text-center space-y-8 p-6" data-aos="zoom-in">
+    <div class="space-y-2">
+      <h4 class="text-wedding-gold font-philosopher uppercase tracking-[0.4em] text-sm">Save The Date</h4>
+      <h1 class="text-6xl md:text-8xl font-serif text-wedding-cream leading-none">Âu & Yến</h1>
+    </div>
+
+    <button id="open-invitation" class="group relative px-12 py-4 overflow-hidden border border-wedding-gold text-wedding-gold font-philosopher uppercase tracking-[0.3em] hover:text-wedding-navy transition-colors duration-500">
+      <span class="relative z-10">Hãy khám phá hành trình của tụi mình nhé</span>
+      <div class="absolute inset-0 bg-wedding-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+    </button>
+  </div>
+</div>
+
+<script>
+  const cover = document.getElementById('wedding-cover');
+  const btn = document.getElementById('open-invitation');
+
+  document.body.style.overflow = 'hidden';
+
+  btn?.addEventListener('click', () => {
+    cover?.classList.add('opacity-0', 'invisible', '-translate-y-full');
+    document.body.style.overflow = 'auto';
+    window.dispatchEvent(new Event('resize')); 
+  });
+</script>

@@ -9,6 +9,8 @@ import RSVP from '@components/RSVP.astro';
 
 import groomBride from '@images/groom-bride.png';
 import invitationDecor from '@images/invitation-decor.png';
+import Cover from '@components/Cover.astro';
+import Guestbook from '@components/Guestbook.astro';
 
 const myWedding ={
   groom: "Văn Âu",
@@ -82,6 +84,7 @@ const albumPhotos = Array.from({ length: 20 }, (_, i) => `photo-seed-${i}`);
 ---
 
 <MainLayout>
+  <Cover />
 	<Hero groomName={myWedding.groom}
 		brideName={myWedding.bride}
 		weddingDate={myWedding.date}
@@ -117,5 +120,6 @@ const albumPhotos = Array.from({ length: 20 }, (_, i) => `photo-seed-${i}`);
 
 	<Album seeds={albumPhotos} />
 
-  <RSVP />
+  <Guestbook />
+  
 </MainLayout>

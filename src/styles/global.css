@@ -18,3 +18,18 @@ body {
   max-width: 1160px;
   margin: 0 auto;
 }
+
+@keyframes mouse-scroll {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 15px);
+    }
+  }
+
+  .animate-mouse-scroll {
+    animation: mouse-scroll 1.5s infinite;
+  }

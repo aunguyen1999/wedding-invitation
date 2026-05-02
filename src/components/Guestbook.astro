@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets';
+import decorFlower from '@images/decor-flower.png';
+import '@styles/guestbook.css';
+---
+
+<section class="py-24 bg-wedding-navy text-wedding-cream relative overflow-hidden" id="guestbook">
+  <div class="absolute -top-20 -left-20 w-80 opacity-10 pointer-events-none invert rotate-45">
+    <Image src={decorFlower} alt="decor" quality="low" />
+  </div>
+
+  <div class="container mx-auto px-6 max-w-4xl relative z-10">
+    <div class="text-center mb-16 space-y-4" data-aos="fade-up">
+      <h2 class="text-4xl md:text-5xl font-serif tracking-[0.2em] uppercase text-wedding-gold">Sổ Lưu Bút</h2>
+      <p class="font-philosopher italic opacity-70">Gửi lời chúc phúc và tương tác cùng niềm vui của chúng tôi</p>
+      <div class="w-20 h-[1px] bg-wedding-gold mx-auto"></div>
+    </div>
+
+    <div class="bg-white/5 p-8 rounded-lg border border-wedding-gold/20 mb-16 shadow-2xl" data-aos="fade-up">
+      <form id="guestbook-form" class="space-y-6">
+        <div class="space-y-2">
+            <label class="text-[10px] uppercase tracking-widest text-wedding-gold/60">Tên của bạn</label>
+            <input 
+              type="text" 
+              id="guest-name" 
+              name="name" 
+              required 
+              placeholder="Ví dụ: Anh Đồng Nghiệp..." 
+              class="w-full bg-transparent border-b border-wedding-gold/30 py-3 focus:border-wedding-gold outline-none transition-all placeholder:text-white/10" 
+            />
+        </div>
+        <div class="space-y-2">
+          <label class="text-[10px] uppercase tracking-widest text-wedding-gold/60">Lời chúc dành cho Âu & Yến</label>
+          <textarea 
+            id="guest-content" 
+            name="content" 
+            required 
+            rows="3" 
+            placeholder="Nhập lời chúc tại đây..." 
+            class="w-full bg-transparent border-b border-wedding-gold/30 py-3 focus:border-wedding-gold outline-none transition-all resize-none placeholder:text-white/10"
+          ></textarea>
+        </div>
+        <div class="flex items-end">
+            <button 
+              type="submit" 
+              id="submit-wish" 
+              class="w-full bg-wedding-gold text-wedding-navy px-8 py-3 font-bold uppercase tracking-widest hover:bg-white transition-all duration-500 shadow-lg"
+            >
+              Gửi lời chúc ❤️
+            </button>
+          </div>
+      </form>
+    </div>
+
+    <div id="wishes-list" class="grid gap-8 max-h-[700px] overflow-y-auto pr-4 custom-scrollbar">
+       <!-- <div class="text-center opacity-30 animate-pulse py-10">Đang tải những lời chúc...</div> -->
+    </div>
+    <div class="load-more-container" data-aos="fade-up">
+      <button id="load-more-btn" class="hidden">Xem thêm lời chúc</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initGuestbook } from '@scripts/guestbook.js';
+  initGuestbook();
+</script>
