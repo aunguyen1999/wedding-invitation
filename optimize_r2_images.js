@@ -60,16 +60,8 @@ async function optimizeAndUpload() {
       if (key.startsWith('album/')) {
         // --- ALBUM IMAGE: Create full-res webp and thumbnail webp ---
         const fullWebpKey = `${baseName}.webp`;
-        const thumbWebpKey = `${baseName}_thumb.webp`;
-        console.log(`⏳ Optimizing album full-res to WebP (max 2000px)...`);
         const fullWebpBuffer = await sharp(originalBuffer)
-          .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
-          .webp({ quality: 80 })
-          .toBuffer();
-        console.log(`⏳ Optimizing album thumbnail to WebP (max 600px)...`);
-        const thumbWebpBuffer = await sharp(originalBuffer)
-          .resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true })
-          .webp({ quality: 80 })
+          .webp({ quality: 90 })
           .toBuffer();
         // Upload Full-Res WebP
         console.log(`📤 Uploading full-res WebP: ${fullWebpKey} (${(fullWebpBuffer.length / 1024).toFixed(1)} KB)`);
@@ -79,27 +71,10 @@ async function optimizeAndUpload() {
           Body: fullWebpBuffer,
           ContentType: 'image/webp',
         }));
-        // Upload Thumbnail WebP
-        console.log(`📤 Uploading thumbnail WebP: ${thumbWebpKey} (${(thumbWebpBuffer.length / 1024).toFixed(1)} KB)`);
-        await s3.send(new PutObjectCommand({
-          Bucket: r2BucketName,
-          Key: thumbWebpKey,
-          Body: thumbWebpBuffer,
-          ContentType: 'image/webp',
-        }));
       } else {
         // --- ROOT IMAGE: Create optimized WebP ---
         const webpKey = `${baseName}.webp`;
-        let maxSize = 2000;
-        // Custom max sizes for specific root images
-        if (key.includes('groom') || key.includes('bride')) {
-          maxSize = key.includes('groom-bride') ? 2000 : 1000;
-        } else if (key.includes('decor-flower') || key.includes('invitation-decor')) {
-          maxSize = 800;
-        }
-        console.log(`⏳ Optimizing root image to WebP (max ${maxSize}px)...`);
         const webpBuffer = await sharp(originalBuffer)
-          .resize({ width: maxSize, height: maxSize, fit: 'inside', withoutEnlargement: true })
           .webp({ quality: 85 })
           .toBuffer();
         console.log(`📤 Uploading WebP: ${webpKey} (${(webpBuffer.length / 1024).toFixed(1)} KB)`);

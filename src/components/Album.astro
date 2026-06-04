@@ -1,6 +1,6 @@
 ---
 // src/components/Album.astro
-import { listR2Folder, getR2ImageThumbnailUrl } from '../utils/r2';
+import { listR2Folder } from '../utils/r2';
 import { Image } from 'astro:assets'
 
 interface Props {
@@ -11,8 +11,7 @@ interface Props {
 
 const { 
   title = "Album Hình Cưới", 
-  seeds = [], 
-  limit = 9 
+  limit = 10
 } = Astro.props;
 
 // Map the album seeds to R2 URLs if configured
@@ -35,15 +34,13 @@ const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || '';
       
       <div class="columns-2 md:columns-3 gap-4 space-y-4">
         {visibleImages.map((src, index) => {
-          const relativePath = src.replace(`${r2BaseUrl}/`, '');
-          const cdnThumbUrl = getR2ImageThumbnailUrl(relativePath) || src;
           return (
             <a 
               href={src} 
               class="block relative group overflow-hidden rounded-sm shadow-sm"
             >
               <Image 
-                  src={cdnThumbUrl}
+                  src={src}
                   alt="Wedding photo"
                   class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
                   loading="lazy"
@@ -64,15 +61,12 @@ const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || '';
 
       <div class="hidden">
         {hiddenImages.map((src, index) => {
-          const relativePath = src.replace(`${r2BaseUrl}/`, '');
-          const cdnThumbUrl = getR2ImageThumbnailUrl(relativePath) || src;
-          
           return (
             <a 
               href={src} 
             >
                <Image 
-                  src={cdnThumbUrl}
+                  src={src}
                   alt="Wedding photo"
                   class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
                   loading="lazy"

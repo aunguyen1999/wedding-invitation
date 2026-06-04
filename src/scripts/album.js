@@ -23,24 +23,7 @@ export function initAlbum() {
       gallery: '#wedding-gallery',
       children: 'a',
       pswpModule: PhotoSwipe,
-    });
-
-    // Dynamically detect and update natural dimensions of images on load to prevent stretching
-    // and allow zooming to the full high-res size instead of hardcoded/thumbnail limits.
-    lightbox.on('contentLoad', ({ content }) => {
-      if (content.type === 'image' && content.data) {
-        const img = new Image();
-        img.src = content.data.src;
-        img.onload = () => {
-          if (img.naturalWidth && img.naturalHeight) {
-            content.data.w = img.naturalWidth;
-            content.data.h = img.naturalHeight;
-            if (lightbox.pswp) {
-              lightbox.pswp.refreshSlideContent(content.index);
-            }
-          }
-        };
-      }
+      // zoom: false
     });
 
     lightbox.init();
