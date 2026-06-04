@@ -1,35 +1,68 @@
 ---
-import { Image } from 'astro:assets';
-import coverImg from '@images/hero-portrait.png';
+import {Image} from 'astro:assets';
+import { getR2ImageUrl } from '../utils/r2';
+import '@styles/cover.css';
+
+// Request the pre-optimized WebP from R2 — bypass Astro <Image> processing entirely
+const coverImg = getR2ImageUrl('hero-portrait.webp');
 ---
 
-<div id="wedding-cover" class="fixed inset-0 z-[100] flex items-center justify-center bg-wedding-navy overflow-hidden transition-all duration-1000 ease-in-out">
-  <div class="absolute inset-0 opacity-40">
-    <Image src={coverImg} alt="cover" class="w-full h-full object-cover blur-sm" />
+<div id="wedding-cover" class="wedding-cover-container">
+  <div class="split-panel left-panel">
+    <div class="cover-bg-wrap">
+      {coverImg && (
+        <Image
+          src={coverImg}
+          alt=""
+          class="cover-bg-image"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          aria-hidden="true"
+          inferSize={true}
+        />
+      )}
+      <div class="cover-overlay"></div>
+    </div>
+    <div class="envelope-half envelope-left"></div>
   </div>
 
-  <div class="relative z-10 text-center space-y-8 p-6" data-aos="zoom-in">
-    <div class="space-y-2">
-      <h4 class="text-wedding-gold font-philosopher uppercase tracking-[0.4em] text-sm">Save The Date</h4>
-      <h1 class="text-6xl md:text-8xl font-serif text-wedding-cream leading-none">Âu & Yến</h1>
+  <div class="split-panel right-panel">
+    <div class="cover-bg-wrap">
+      {coverImg && (
+        <Image
+          src={coverImg}
+          alt=""
+          class="cover-bg-image"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          aria-hidden="true"
+          inferSize={true}
+        />
+      )}
+      <div class="cover-overlay"></div>
     </div>
+    <div class="envelope-half envelope-right"></div>
+  </div>
 
-    <button id="open-invitation" class="group relative px-12 py-4 overflow-hidden border border-wedding-gold text-wedding-gold font-philosopher uppercase tracking-[0.3em] hover:text-wedding-navy transition-colors duration-500">
-      <span class="relative z-10">Hãy khám phá hành trình của tụi mình nhé</span>
-      <div class="absolute inset-0 bg-wedding-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-    </button>
+  <div class="cover-instruction" id="cover-instruction">
+    <h4 class="text-wedding-gold font-philosopher uppercase tracking-[0.4em] text-xs md:text-sm mb-2">Save The Date</h4>
+    <h1 class="text-4xl md:text-6xl font-serif text-wedding-cream mb-4">Âu & Yến</h1>
+    <div id="cover-guest-wrapper" class="cover-guest-wrapper">
+      <div class="cover-guest-divider"></div>
+      <p class="cover-guest-label">Kính mời</p>
+      <p class="cover-guest-name" id="cover-guest-name"></p>
+    </div>
+    <div class="tap-hint">Bấm để mở thiệp cưới</div>
+  </div>
+
+  <div class="envelope-seal" id="envelope-seal">
+    <div class="seal-inner">❤</div>
   </div>
 </div>
 
 <script>
-  const cover = document.getElementById('wedding-cover');
-  const btn = document.getElementById('open-invitation');
-
-  document.body.style.overflow = 'hidden';
-
-  btn?.addEventListener('click', () => {
-    cover?.classList.add('opacity-0', 'invisible', '-translate-y-full');
-    document.body.style.overflow = 'auto';
-    window.dispatchEvent(new Event('resize')); 
-  });
+  import { initCover } from '@scripts/cover.js';
+  initCover();
 </script>

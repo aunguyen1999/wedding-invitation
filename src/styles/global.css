@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Philosopher:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
 @import "tailwindcss";
 
@@ -6,12 +6,22 @@
   --color-wedding-navy: #1a237e;
   --color-wedding-gold: #d4af37;
   --color-wedding-cream: #f5f5dc;
-  --font-serif: 'EB Garamond', serif;
+  --font-serif: 'Cormorant Garamond', 'EB Garamond', serif;
   --font-philosopher: 'Philosopher', sans-serif;
+  --font-display: 'Cinzel', serif;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  font-family: 'EB Garamond', serif;
+  font-family: var(--font-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
 }
 
 .t2-container {

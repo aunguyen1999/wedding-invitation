@@ -8,10 +8,11 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro build && astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1057.0",
     "@tailwindcss/vite": "^4.2.2",
     "aos": "^2.3.4",
     "astro": "^6.1.3",

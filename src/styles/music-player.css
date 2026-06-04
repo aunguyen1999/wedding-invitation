@@ -1,0 +1,315 @@
+.music-player-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 40px;
+  padding: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.music-player-container.is-expanded {
+  max-width: 320px;
+  padding: 6px 16px 6px 6px;
+  background: rgba(26, 35, 126, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.turntable-base {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.vinyl-disc {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    #1a1a1a 0% 22%,
+    #0a0a0a 22% 24%,
+    #2e2e2e 24% 30%,
+    #111 30% 34%,
+    #2a2a2a 34% 40%,
+    #111 40% 44%,
+    #282828 44% 50%,
+    #111 50% 54%,
+    #252525 54% 60%,
+    #111 60% 64%,
+    #222 64% 70%,
+    #111 70% 100%
+  );
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.vinyl-disc::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #d4af37 0deg 80deg,
+    #0d1a5c 80deg 200deg,
+    #8b1a2c 200deg 255deg,
+    #0d1a5c 255deg 360deg
+  );
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.vinyl-center {
+  position: relative;
+  z-index: 2;
+  width: 7px;
+  height: 7px;
+  background: #0a0a0a;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.music-player-container.is-playing .vinyl-disc,
+.music-player-container.is-paused .vinyl-disc {
+  animation: spinVinyl 5s linear infinite;
+}
+
+.tonearm-pivot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 35% 35%, #f0d060, var(--color-wedding-gold));
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  z-index: 4;
+}
+
+.tonearm-arm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -1px;
+  width: 34px;
+  height: 2px;
+  background: linear-gradient(to right, #e8c84a, #d4af37 60%, rgba(212, 175, 55, 0.5));
+  transform-origin: left center;
+  transform: rotate(135deg);
+  transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 0 1px 1px 0;
+  z-index: 3;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.tonearm-arm::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background: var(--color-wedding-gold);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(212, 175, 55, 0.6);
+}
+
+.music-player-container.is-paused .tonearm-arm {
+  transform: rotate(88deg);
+}
+
+.music-player-container.is-playing .tonearm-arm {
+  animation: armTrack 1.8s ease-in-out infinite;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 110px;
+  flex-shrink: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-15px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.music-player-container.is-expanded .track-info {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0.2s;
+}
+
+.track-title {
+  font-family: var(--font-philosopher);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-wedding-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.track-artist {
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  color: rgba(245, 245, 220, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-15px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.music-player-container.is-expanded .music-controls {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0.2s;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: var(--color-wedding-gold);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.control-btn:hover {
+  color: var(--color-wedding-cream);
+  transform: scale(1.1);
+}
+
+.control-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.floating-note {
+  position: fixed;
+  z-index: 98;
+  pointer-events: none;
+  font-family: Arial, sans-serif;
+  animation-name: riseAndFade;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes spinVinyl {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes riseAndFade {
+  0% {
+    transform: translate(0, 0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--x-offset), -100px) scale(1) rotate(var(--rotation));
+    opacity: 0;
+  }
+}
+
+@keyframes armTrack {
+  0%   { transform: rotate(135deg); }
+  50%  { transform: rotate(137deg); }
+  100% { transform: rotate(135deg); }
+}
+
+@media (max-width: 640px) {
+  .music-player-container {
+    bottom: 16px;
+    left: 16px;
+    padding: 0;
+    gap: 8px;
+    max-width: 100px;
+  }
+
+  .music-player-container.is-expanded {
+    max-width: 250px;
+    padding: 5px 12px 5px 5px;
+  }
+
+  .turntable-base {
+    width: 64px;
+    height: 64px;
+  }
+
+  .vinyl-disc {
+    width: 50px;
+    height: 50px;
+  }
+
+  .tonearm-arm {
+    width: 29px;
+  }
+
+  .track-info {
+    max-width: 85px;
+  }
+
+  .track-title {
+    font-size: 0.75rem;
+  }
+
+  .track-artist {
+    font-size: 0.6rem;
+  }
+}

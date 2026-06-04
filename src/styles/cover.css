@@ -1,0 +1,296 @@
+html:has(#wedding-cover:not(.is-dismissed)),
+body:has(#wedding-cover:not(.is-dismissed)) {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+:root {
+  --env-w: 140px;
+  --env-h: 200px;
+  --seal-size: 36px;
+  --seal-font: 1.0rem;
+}
+
+@media (min-width: 480px) {
+  :root {
+    --env-w: 170px;
+    --env-h: 240px;
+    --seal-size: 40px;
+    --seal-font: 1.1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --env-w: 200px;
+    --env-h: 280px;
+    --seal-size: 46px;
+    --seal-font: 1.25rem;
+  }
+}
+
+.wedding-cover-container {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.split-panel {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+  background-color: var(--color-wedding-navy);
+  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+  z-index: 10;
+}
+
+.left-panel {
+  left: 0;
+  transform-origin: left;
+  box-shadow: 0px 0 35px rgba(0, 0, 0, 0.3);
+}
+
+.right-panel {
+  right: 0;
+  transform-origin: right;
+  box-shadow: -0px 0 35px rgba(0, 0, 0, 0.3);
+}
+
+.cover-bg-wrap {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.cover-bg-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  filter: blur(8px) scale(1.05);
+  max-width: none;
+  position: absolute;
+  top: 0;
+}
+
+.left-panel .cover-bg-image {
+  left: 0;
+}
+
+.right-panel .cover-bg-image {
+  right: 0;
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(10, 14, 54, 0.95) 100%);
+  /* background-color: var(--color-wedding-navy); */
+}
+
+.cover-instruction {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 400px;
+  z-index: 25;
+  text-align: center;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  pointer-events: none;
+  animation: fade-down 1s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cover-instruction.is-hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.tap-hint {
+  font-family: var(--font-philosopher);
+  color: var(--color-wedding-cream);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  opacity: 0.8;
+  animation: pulse-hint 2s infinite ease-in-out;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.5; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.envelope-half {
+  position: absolute;
+  top: 50%;
+  width: calc(var(--env-w) / 2);
+  height: var(--env-h);
+  transform: translateY(-50%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.envelope-left {
+  right: 0;
+  background: linear-gradient(135deg, #18227c, #0e144a);
+  border: 1px solid var(--color-wedding-gold);
+  border-right: none;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.envelope-left::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--color-wedding-gold);
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  opacity: 0.7;
+}
+
+.envelope-right {
+  left: 0;
+  background: linear-gradient(225deg, #18227c, #0e144a);
+  border: 1px solid var(--color-wedding-gold);
+  border-left: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.envelope-right::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--color-wedding-gold);
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  opacity: 0.7;
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: var(--seal-size);
+  height: var(--seal-size);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fce28b 0%, #d4af37 60%, #99710f 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  cursor: pointer;
+  transition: transform 0.4s ease, opacity 0.2s ease-out;
+  animation: zoom-in-seal 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s both, pulse-gold 2.5s infinite ease-in-out 1.3s;
+}
+
+.seal-inner {
+  font-size: var(--seal-font);
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  transform: rotate(-10deg);
+  user-select: none;
+}
+
+.wedding-cover-container:hover .envelope-seal {
+  transform: translateY(-50%) scale(1.1) rotate(5deg);
+}
+
+@keyframes pulse-gold {
+  0% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(212, 175, 55, 0.5); }
+  70% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(212, 175, 55, 0); }
+  100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+@keyframes zoom-in-seal {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+.wedding-cover-container.is-dismissed .left-panel {
+  transform: translateX(-100%);
+}
+
+.wedding-cover-container.is-dismissed .right-panel {
+  transform: translateX(100%);
+}
+
+.wedding-cover-container.is-dismissed .envelope-seal {
+  opacity: 0 !important;
+  transform: translateY(-50%) scale(0.5) !important;
+  pointer-events: none;
+}
+
+.wedding-cover-container.is-dismissed .cover-instruction {
+  opacity: 0 !important;
+  transform: translateY(-20px) !important;
+  pointer-events: none;
+}
+
+/* === Guest Name Slot (hidden until ?guest-name= is present) === */
+.cover-guest-wrapper {
+  display: none;
+  margin-bottom: 1rem;
+  animation: fade-down 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.cover-guest-wrapper.is-visible {
+  display: block;
+}
+
+.cover-guest-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-wedding-gold);
+  margin: 0 auto 0.85rem;
+  opacity: 0.5;
+}
+
+.cover-guest-label {
+  font-family: var(--font-philosopher), sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.7);
+  margin-bottom: 0.3rem;
+}
+
+.cover-guest-name {
+  font-family: var(--font-serif), serif;
+  font-size: clamp(1.1rem, 3.5vw, 1.75rem);
+  font-style: italic;
+  color: var(--color-wedding-gold);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  margin-bottom: 1rem;
+}

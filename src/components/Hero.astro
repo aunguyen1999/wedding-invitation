@@ -6,9 +6,9 @@ interface Props {
   groomName: string;
   brideName: string;
   weddingDate: string;
-  heroImage: ImageMetadata;
+  heroImage: ImageMetadata | string;
   slogan: string;
-  decorImage: ImageMetadata;
+  decorImage: ImageMetadata | string;
 }
 
 const {
@@ -19,15 +19,21 @@ const {
   slogan,
   decorImage
 } = Astro.props;
+
+// Determine if images are remote R2 URLs or local ImageMetadata
+const isRemoteHero = typeof heroImage === 'string';
+const isRemoteDecor = typeof decorImage === 'string';
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-gold/10">
-  <Image 
-    src={decorImage} 
-    class="absolute -bottom-10 -left-10 w-40 md:w-64 opacity-40 z-0 select-none pointer-events-none"
-    alt="decor"
-  />
-
+    <Image
+      src={decorImage as ImageMetadata}
+      class="absolute -bottom-10 -left-10 w-40 md:w-64 opacity-40 z-0 select-none pointer-events-none"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      inferSize={true}
+    />
   <div class="container mx-auto px-6 z-10">
     <div class="flex flex-col md:flex-row items-center gap-16">
       
@@ -63,9 +69,10 @@ const {
 
       <div class="flex-1 relative group">
         <div class="relative z-10 border-[16px] border-white shadow-2xl overflow-hidden rounded-t-[200px] aspect-[3/4]">
-          <Image 
-            src={heroImage} 
-            alt="Wedding Portrait" 
+          <Image
+            src={heroImage as ImageMetadata}
+            alt="Wedding Portrait"
+            inferSize={true}
             class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
           />
         </div>
@@ -75,13 +82,4 @@ const {
     </div>
   </div>
 
-<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
-  <div class="w-[26px] h-[42px] border-2 border-wedding-navy/30 rounded-[15px] relative">
-    <div class="absolute top-2 left-1/2 w-1 h-2 bg-wedding-gold rounded-full animate-mouse-scroll"></div>
-  </div>
-  
-  <span class="text-[10px] uppercase tracking-[0.3em] font-philosopher text-wedding-navy/40 animate-pulse">
-    Cuộn để xem
-  </span>
-</div>
 </section>

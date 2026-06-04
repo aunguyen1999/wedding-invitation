@@ -1,5 +1,8 @@
 ---
 // src/components/Album.astro
+import { listR2Folder, getR2ImageThumbnailUrl } from '../utils/r2';
+import { Image } from 'astro:assets'
+
 interface Props {
   title?: string;
   seeds?: string[];
@@ -12,12 +15,17 @@ const {
   limit = 9 
 } = Astro.props;
 
-const visibleSeeds = seeds.slice(0, limit);
-const hiddenSeeds = seeds.slice(limit);
+// Map the album seeds to R2 URLs if configured
+const albumPhotos = await listR2Folder('album/');
+
+const visibleImages = albumPhotos.slice(0, limit);
+const hiddenImages = albumPhotos.slice(limit);
+
+const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || '';
 ---
 
-<section class="py-24 bg-white" data-aos="fade-up">
-  <div class="container mx-auto px-6 max-w-6xl">
+<section class="py-24 bg-white">
+  <div class="container mx-auto px-6 max-w-6xl" data-aos="fade-up">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-serif text-wedding-navy tracking-[0.2em] uppercase">{title}</h2>
       <div class="w-24 h-[1px] bg-wedding-gold mx-auto mt-4"></div>
@@ -26,22 +34,26 @@ const hiddenSeeds = seeds.slice(limit);
     <div class="pswp-gallery" id="wedding-gallery">
       
       <div class="columns-2 md:columns-3 gap-4 space-y-4">
-        {visibleSeeds.map((seed, index) => {
-          const width = 1200;
-          const height = index % 2 === 0 ? 1600 : 900;
-          const src = `https://picsum.photos/seed/${seed}/${width}/${height}`;
-          
+        {visibleImages.map((src, index) => {
+          const relativePath = src.replace(`${r2BaseUrl}/`, '');
+          const cdnThumbUrl = getR2ImageThumbnailUrl(relativePath) || src;
           return (
             <a 
               href={src} 
-              data-pswp-width={width} 
-              data-pswp-height={height} 
               class="block relative group overflow-hidden rounded-sm shadow-sm"
             >
-              <img src={src} alt="Wedding photo" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" />
-              {index === limit - 1 && hiddenSeeds.length > 0 && (
+              <Image 
+                  src={cdnThumbUrl}
+                  alt="Wedding photo"
+                  class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
+                  inferSize={true}
+                />
+              {index === limit - 1 && hiddenImages.length > 0 && (
                 <div class="absolute inset-0 bg-wedding-navy/60 flex flex-col items-center justify-center text-wedding-cream">
-                  <span class="text-3xl font-serif">+{hiddenSeeds.length}</span>
+                  <span class="text-3xl font-serif">+{hiddenImages.length}</span>
                   <span class="text-xs uppercase tracking-widest font-philosopher">Xem thêm</span>
                 </div>
               )}
@@ -51,35 +63,32 @@ const hiddenSeeds = seeds.slice(limit);
       </div>
 
       <div class="hidden">
-        {hiddenSeeds.map((seed, index) => {
-          const width = 1200;
-          const height = (index + limit) % 2 === 0 ? 1600 : 900;
-          const src = `https://picsum.photos/seed/${seed}/${width}/${height}`;
+        {hiddenImages.map((src, index) => {
+          const relativePath = src.replace(`${r2BaseUrl}/`, '');
+          const cdnThumbUrl = getR2ImageThumbnailUrl(relativePath) || src;
           
           return (
             <a 
               href={src} 
-              data-pswp-width={width} 
-              data-pswp-height={height}
             >
-              <img src={src} alt="Hidden wedding photo" />
+               <Image 
+                  src={cdnThumbUrl}
+                  alt="Wedding photo"
+                  class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
+                  inferSize={true}
+                />
             </a>
           )
         })}
       </div>
-
     </div>
   </div>
 </section>
 
 <script>
-  import PhotoSwipeLightbox from 'photoswipe/lightbox';
-  import 'photoswipe/style.css';
-
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#wedding-gallery',
-    children: 'a',
-    pswpModule: () => import('photoswipe'),
-  });
-  lightbox.init();
+  import { initAlbum } from '@scripts/album.js';
+  initAlbum();
 </script>

@@ -5,34 +5,37 @@ import Biography from '@components/Biography.astro';
 import Story from '@components/Story.astro';
 import Timeline from '@components/Timeline.astro';
 import Album from '@components/Album.astro';
-import RSVP from '@components/RSVP.astro';
 
-import groomBride from '@images/groom-bride.png';
-import invitationDecor from '@images/invitation-decor.png';
+import { getR2ImageUrl } from '../utils/r2';
 import Cover from '@components/Cover.astro';
 import Guestbook from '@components/Guestbook.astro';
+import Program from '@components/Program.astro';
+import MusicPlayer from '@components/MusicPlayer.astro';
 
-const myWedding ={
+const groomBride = getR2ImageUrl('groom-bride.webp');
+const invitationDecor = getR2ImageUrl('invitation-decor.webp');
+
+const myWedding = {
   groom: "Văn Âu",
   bride: "Kim Yến",
   date: "19 . 07 . 2026",
   mainPhoto: groomBride,
   slogan: "Hành trình vạn dặm bắt đầu từ một bước chân chung đôi.",
   decorImage: invitationDecor
-}
+};
 
 const weddingData = {
   groom: {
     name: "Văn Âu",
     desc: "Một chàng trai Drupal Developer yêu code và yêu vợ. Sở thích là build những thứ hay ho bằng Docker và ngắm nhìn hoàng hôn trên bãi biển.",
-    photo: "https://picsum.photos/seed/man/800/1000",
-    pet: "https://picsum.photos/seed/dog/400/400"
+    photo: getR2ImageUrl('groom.webp'),
+    pet: getR2ImageUrl('groom-pet.webp')
   },
   bride: {
     name: "Kim Yến",
     desc: "Cô gái Manual Tester luôn tỉ mỉ trong từng chi tiết. Thích du lịch, chụp ảnh và là mảnh ghép hoàn hảo nhất trong cuộc đời của Aun.",
-    photo: "https://picsum.photos/seed/woman/800/1000",
-    pet: "https://picsum.photos/seed/cat/400/400"
+    photo: getR2ImageUrl('bride.webp'),
+    pet: getR2ImageUrl('bride-pet.webp')
   }
 };
 
@@ -81,10 +84,65 @@ const milestones = [
 ];
 
 const albumPhotos = Array.from({ length: 20 }, (_, i) => `photo-seed-${i}`);
+
+const brideProgram = [
+  {
+    time: "09:00",
+    title: "Lễ Vu Quy",
+    desc: "Nghi thức bái đường gia tiên tại tư gia nhà gái.",
+    icon: "ceremony",
+    location: "Tư gia Nhà gái: 123 Nguyễn Văn Cừ, Q.5",
+    mapLink: "https://maps.google.com/?q=123+Nguyên+Văn+Cừ+Quận+5+TP+Hồ+Chí+Minh"
+  },
+  {
+    time: "10:00",
+    title: "Đón Khách",
+    desc: "Đón tiếp quý khách mời tại tư gia nhà gái.",
+    icon: "welcome",
+    location: "Tư gia Nhà gái: 123 Nguyễn Văn Cừ, Q.5",
+    mapLink: "https://maps.google.com/?q=123+Nguyên+Văn+Cừ+Quận+5+TP+Hồ+Chí+Minh"
+  },
+  {
+    time: "11:00",
+    title: "Tiệc Mừng",
+    desc: "Thưởng thức tiệc cưới thân mật cùng họ nhà gái.",
+    icon: "feast",
+    location: "Tư gia Nhà gái: 123 Nguyễn Văn Cừ, Q.5",
+    mapLink: "https://maps.google.com/?q=123+Nguyên+Văn+Cừ+Quận+5+TP+Hồ+Chí+Minh"
+  }
+];
+
+const groomProgram = [
+  {
+    time: "09:00",
+    title: "Lễ Thành Hôn",
+    desc: "Nghi thức thành hôn trao nhẫn cưới và hẹn ước.",
+    icon: "ceremony",
+    location: "Tư gia Nhà nam: 123 Hoàng Văn Thụ, Tân Bình",
+    mapLink: "https://maps.google.com/?q=123+Hoàng+Văn+Thụ+Tân+Bình+TP+Hồ+Chí+Minh"
+  },
+  {
+    time: "10:00",
+    title: "Đón Khách",
+    desc: "Đón tiếp khách mời tại sảnh tiệc nhà trai.",
+    icon: "welcome",
+    location: "Sảnh tiệc: Nhà hàng The Adora Center (431 Hoàng Văn Thụ, Tân Bình)",
+    mapLink: "https://maps.google.com/?q=The+Adora+Center+431+Hoàng+Văn+Thụ+Tân+Bình+TP+Hồ+Chí+Minh"
+  },
+  {
+    time: "11:00",
+    title: "Khai Tiệc",
+    desc: "Khai tiệc mừng và chúc phúc cho đôi uyên ương.",
+    icon: "feast",
+    location: "Sảnh tiệc: Nhà hàng The Adora Center (431 Hoàng Văn Thụ, Tân Bình)",
+    mapLink: "https://maps.google.com/?q=The+Adora+Center+431+Hoàng+Văn+Thụ+Tân+Bình+TP+Hồ+Chí+Minh"
+  }
+];
 ---
 
 <MainLayout>
   <Cover />
+  <MusicPlayer />
 	<Hero groomName={myWedding.groom}
 		brideName={myWedding.bride}
 		weddingDate={myWedding.date}
@@ -117,6 +175,13 @@ const albumPhotos = Array.from({ length: 20 }, (_, i) => `photo-seed-${i}`);
 	))}
 
 	<Timeline events={milestones} />
+
+	<Program 
+		bride={brideProgram} 
+		groom={groomProgram}
+		brideDate="17 . 07 . 2026"
+		groomDate="19 . 07 . 2026"
+	/>
 
 	<Album seeds={albumPhotos} />
 
