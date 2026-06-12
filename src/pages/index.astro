@@ -29,13 +29,11 @@ const weddingData = {
     name: "Văn Âu",
     desc: "Một chàng trai Drupal Developer yêu code và yêu vợ. Sở thích là build những thứ hay ho bằng Docker và ngắm nhìn hoàng hôn trên bãi biển.",
     photo: getR2ImageUrl('groom.webp'),
-    pet: getR2ImageUrl('groom-pet.webp')
   },
   bride: {
     name: "Kim Yến",
     desc: "Cô gái Manual Tester luôn tỉ mỉ trong từng chi tiết. Thích du lịch, chụp ảnh và là mảnh ghép hoàn hảo nhất trong cuộc đời của Aun.",
     photo: getR2ImageUrl('bride.webp'),
-    pet: getR2ImageUrl('bride-pet.webp')
   }
 };
 
@@ -156,7 +154,6 @@ const groomProgram = [
 		name={weddingData.groom.name}
 		description={weddingData.groom.desc}
 		image={weddingData.groom.photo}
-		subImage={weddingData.groom.pet}
 	/>
 
 	<Biography 
@@ -164,7 +161,6 @@ const groomProgram = [
 		name={weddingData.bride.name}
 		description={weddingData.bride.desc}
 		image={weddingData.bride.photo}
-		subImage={weddingData.bride.pet}
 		reverse={true}
 	/>
 

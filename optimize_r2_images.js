@@ -1,3 +1,4 @@
+
 import { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
 const r2AccessKey = process.env.R2_ACCESS_KEY_ID;
@@ -60,8 +61,16 @@ async function optimizeAndUpload() {
       if (key.startsWith('album/')) {
         // --- ALBUM IMAGE: Create full-res webp and thumbnail webp ---
         const fullWebpKey = `${baseName}.webp`;
+        const thumbWebpKey = `${baseName}_thumb.webp`;
+        console.log(`⏳ Optimizing album full-res to WebP (max 2000px)...`);
         const fullWebpBuffer = await sharp(originalBuffer)
-          .webp({ quality: 90 })
+          .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 80 })
+          .toBuffer();
+        console.log(`⏳ Optimizing album thumbnail to WebP (max 600px)...`);
+        const thumbWebpBuffer = await sharp(originalBuffer)
+          .resize({ width: 600, height: 600, fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 80 })
           .toBuffer();
         // Upload Full-Res WebP
         console.log(`📤 Uploading full-res WebP: ${fullWebpKey} (${(fullWebpBuffer.length / 1024).toFixed(1)} KB)`);
@@ -71,10 +80,27 @@ async function optimizeAndUpload() {
           Body: fullWebpBuffer,
           ContentType: 'image/webp',
         }));
+        // Upload Thumbnail WebP
+        console.log(`📤 Uploading thumbnail WebP: ${thumbWebpKey} (${(thumbWebpBuffer.length / 1024).toFixed(1)} KB)`);
+        await s3.send(new PutObjectCommand({
+          Bucket: r2BucketName,
+          Key: thumbWebpKey,
+          Body: thumbWebpBuffer,
+          ContentType: 'image/webp',
+        }));
       } else {
         // --- ROOT IMAGE: Create optimized WebP ---
         const webpKey = `${baseName}.webp`;
+        let maxSize = 2000;
+        // Custom max sizes for specific root images
+        if (key.includes('groom') || key.includes('bride')) {
+          maxSize = key.includes('groom-bride') ? 2000 : 1000;
+        } else if (key.includes('decor-flower') || key.includes('invitation-decor')) {
+          maxSize = 800;
+        }
+        console.log(`⏳ Optimizing root image to WebP (max ${maxSize}px)...`);
         const webpBuffer = await sharp(originalBuffer)
+          .resize({ width: maxSize, height: maxSize, fit: 'inside', withoutEnlargement: true })
           .webp({ quality: 85 })
           .toBuffer();
         console.log(`📤 Uploading WebP: ${webpKey} (${(webpBuffer.length / 1024).toFixed(1)} KB)`);

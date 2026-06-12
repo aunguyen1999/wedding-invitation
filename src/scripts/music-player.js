@@ -1,22 +1,16 @@
 const songs = [
   {
-    title: "Beautiful In White",
-    artist: "Shane Filan",
     src: "/music/song1.mp3"
   },
   {
-    title: "Until I Found You",
-    artist: "Stephen Sanchez",
     src: "/music/song2.mp3"
   },
   {
-    title: "Perfect",
-    artist: "Ed Sheeran",
     src: "/music/song3.mp3"
   }
 ];
 
-let currentIndex = 0;
+let currentIndex = Math.floor(Math.random() * songs.length) ;
 let isPlaying = false;
 let audio = null;
 let noteInterval = null;
@@ -24,12 +18,8 @@ let noteInterval = null;
 export function initMusicPlayer() {
   const container = document.getElementById('wedding-music-player');
   const vinylWrapper = document.getElementById('vinyl-toggle-wrapper');
-  const playPauseBtn = document.getElementById('music-play-pause-btn');
-  const nextBtn = document.getElementById('music-next-btn');
-  const titleEl = document.getElementById('music-track-title');
-  const artistEl = document.getElementById('music-track-artist');
 
-  if (!container || !vinylWrapper || !playPauseBtn || !nextBtn || !titleEl || !artistEl) {
+  if (!container || !vinylWrapper) {
     return;
   }
 
@@ -37,25 +27,16 @@ export function initMusicPlayer() {
   audio.src = songs[currentIndex].src;
   audio.volume = 0.5;
 
-  updateTrackDisplay();
-
-  function updateTrackDisplay() {
-    titleEl.textContent = songs[currentIndex].title;
-    artistEl.textContent = songs[currentIndex].artist;
-  }
-
   function playTrack() {
     audio.play().then(() => {
       isPlaying = true;
       container.classList.remove('is-paused');
       container.classList.add('is-playing');
-      updatePlayPauseIcon(true);
       startNoteSpawner();
     }).catch(() => {
       isPlaying = false;
       container.classList.remove('is-playing');
       container.classList.add('is-paused');
-      updatePlayPauseIcon(false);
     });
   }
 
@@ -64,7 +45,6 @@ export function initMusicPlayer() {
     isPlaying = false;
     container.classList.remove('is-playing');
     container.classList.add('is-paused');
-    updatePlayPauseIcon(false);
     stopNoteSpawner();
   }
 
@@ -76,24 +56,6 @@ export function initMusicPlayer() {
     }
   }
 
-  function playNext() {
-    currentIndex = (currentIndex + 1) % songs.length;
-    audio.src = songs[currentIndex].src;
-    updateTrackDisplay();
-    playTrack();
-  }
-
-  function updatePlayPauseIcon(playing) {
-    const playSvg = playPauseBtn.querySelector('.play-svg');
-    const pauseSvg = playPauseBtn.querySelector('.pause-svg');
-    if (playing) {
-      playSvg.style.display = 'none';
-      pauseSvg.style.display = 'block';
-    } else {
-      playSvg.style.display = 'block';
-      pauseSvg.style.display = 'none';
-    }
-  }
 
   function startNoteSpawner() {
     if (noteInterval) return;
@@ -140,21 +102,13 @@ export function initMusicPlayer() {
     }, 3200);
   }
 
-  function handleVinylClick(event) {
-    event.stopPropagation();
-    container.classList.toggle('is-expanded');
-  }
-
   document.addEventListener('click', (event) => {
     if (container.classList.contains('is-expanded') && !container.contains(event.target)) {
       container.classList.remove('is-expanded');
     }
   });
 
-  vinylWrapper.addEventListener('click', handleVinylClick);
-  playPauseBtn.addEventListener('click', togglePlay);
-  nextBtn.addEventListener('click', playNext);
-  audio.addEventListener('ended', playNext);
+  vinylWrapper.addEventListener('click', togglePlay);
 
   window.addEventListener('play-wedding-music', () => {
     if (!isPlaying) {
