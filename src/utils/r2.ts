@@ -76,7 +76,7 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
       keys.push(key);
     }
 
-    return keys
+    const resolvedUrls = keys
       .filter(key => {
         const ext = key.split('.').pop()?.toLowerCase();
         return key !== prefix &&
