@@ -15,20 +15,20 @@ export function getR2ImageUrl(path: string): string | null {
 /**
  * Resolves the optimized thumbnail URL.
  */
-// export function getR2ImageThumbnailUrl(path: string): string | null {
-//   const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL;
-//   if (!r2BaseUrl) return null;
+export function getR2ImageThumbnailUrl(path: string): string | null {
+  const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL;
+  if (!r2BaseUrl) return null;
 
-//   const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
-//   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-//   const thumbPath = cleanPath.replace(/\.(jpg|jpeg|png|webp)$/i, '_thumb.webp');
+  const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const thumbPath = cleanPath.replace(/\.(jpg|jpeg|png|webp)$/i, '_thumb.webp');
 
-//   return `${cleanBase}/${thumbPath}`;
-// }
+  return `${cleanBase}/${thumbPath}`;
+}
 
-// /**
-//  * Server-side utility to dynamically list and resolve all files under an R2 folder prefix.
-//  */
+/**
+ * Server-side utility to dynamically list and resolve all files under an R2 folder prefix.
+ */
 // export async function listR2Folder(prefix: string): Promise<string[]> {
 //   const r2AccessKey = import.meta.env.R2_ACCESS_KEY_ID;
 //   const r2SecretKey = import.meta.env.R2_SECRET_ACCESS_KEY;
