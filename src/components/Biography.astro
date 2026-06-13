@@ -1,5 +1,7 @@
 ---
 // src/components/Biography.astro
+import {Image} from 'astro:assets';
+
 interface Props {
   name: string;
   description: string;
@@ -23,10 +25,15 @@ const {
       
       <div class="flex-1 relative w-full group">
         <div class="relative z-10 border-8 border-white shadow-xl overflow-hidden rounded-lg">
-          <img 
+          <Image
             src={image} 
             alt={name} 
             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            aria-hidden="true"
+            inferSize={true}
           />
         </div>
 
