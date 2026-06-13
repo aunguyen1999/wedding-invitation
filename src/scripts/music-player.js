@@ -1,13 +1,7 @@
 const songs = [
-  {
-    src: "/music/song1.mp3"
-  },
-  {
-    src: "/music/song2.mp3"
-  },
-  {
-    src: "/music/song3.mp3"
-  }
+  { src: "https://media.auyenwedding.com/music/song1.mp3" },
+  { src: "https://media.auyenwedding.com/music/song2.mp3" },
+  { src: "https://media.auyenwedding.com/music/song3.mp3" }
 ];
 
 let currentIndex = Math.floor(Math.random() * songs.length) ;
