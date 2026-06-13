@@ -1,4 +1,4 @@
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { AwsClient } from 'aws4fetch';
 
 /**
  * Resolves the absolute Cloudflare R2 URL for a given asset path.
@@ -41,26 +41,35 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
   }
 
   try {
-    // Explicit configuration payload targeting V8 runtime structures directly
-    const config = {
+    const aws = new AwsClient({
+      accessKeyId: r2AccessKey,
+      secretAccessKey: r2SecretKey,
       region: 'auto',
-      endpoint: `https://${r2AccountId}.r2.cloudflarestorage.com`,
-      credentials: {
-        accessKeyId: r2AccessKey,
-        secretAccessKey: r2SecretKey,
-      }
-    };
+      service: 's3'
+    });
 
-    // Dynamically instantiated inside execution scope to trick Vite's chunk optimizer
-    const s3 = new S3Client(config);
+    const url = `https://${r2AccountId}.r2.cloudflarestorage.com/${r2BucketName}?list-type=2&prefix=${encodeURIComponent(prefix)}`;
+    const response = await aws.fetch(url);
 
-    const response = await s3.send(new ListObjectsV2Command({
-      Bucket: r2BucketName,
-      Prefix: prefix,
-    }));
+    if (!response.ok) {
+      console.error(`Failed to list objects in R2 folder "${prefix}": HTTP ${response.status}`);
+      return [];
+    }
 
-    return (response.Contents || [])
-      .map(item => item.Key || '')
+    const xml = await response.text();
+
+    // Parse XML using regex since DOMParser isn't available in standard edge runtime
+    const keys: string[] = [];
+    const regex = /<Key>(.*?)<\/Key>/g;
+    let match;
+    while ((match = regex.exec(xml)) !== null) {
+      // Decode XML entities if any (like &amp;)
+      let key = match[1];
+      key = key.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+      keys.push(key);
+    }
+
+    return keys
       .filter(key => {
         const ext = key.split('.').pop()?.toLowerCase();
         return key !== prefix &&
