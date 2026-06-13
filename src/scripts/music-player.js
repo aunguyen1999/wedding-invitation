@@ -18,6 +18,7 @@ export function initMusicPlayer() {
   }
 
   audio = new Audio();
+  audio.crossOrigin = "anonymous";
   audio.src = songs[currentIndex].src;
   audio.volume = 0.5;
 
