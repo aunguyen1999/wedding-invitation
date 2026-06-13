@@ -11,15 +11,13 @@ const r2BaseUrl = process.env.PUBLIC_R2_BASE_URL || env.PUBLIC_R2_BASE_URL;
 const allowedHost = process.env.ALLOWED_HOST || env.ALLOWED_HOST || 'localhost';
 
 // Prepare the base remote image whitelist
-const domains = [
-  
-];
+const domains = [];
 const remotePatterns = [
   {
     protocol: 'https',
-    hostname: '*.r2.dev',
+    hostname: '*',
     pathname: '/**',
-  },
+  }
 ];
 
 if (r2BaseUrl) {
@@ -52,6 +50,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
     server: {
       allowedHosts: [allowedHost]
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          chunkFileNames: 'chunks/[name]-[hash]-[entryhash].mjs',
+          entryFileNames: 'entry/[name]-[hash].mjs'
+        }
+      }
     }
   },
 

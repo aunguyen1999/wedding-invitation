@@ -2,17 +2,10 @@ import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 /**
  * Resolves the absolute Cloudflare R2 URL for a given asset path.
- * If the PUBLIC_R2_BASE_URL environment variable is not defined, returns null,
- * signaling that components should use their local fallbacks.
- *
- * @param path The path of the image relative to the R2 bucket root (e.g. 'hero-portrait.png')
  */
 export function getR2ImageUrl(path: string): string | null {
   const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL;
-
-  if (!r2BaseUrl) {
-    return null;
-  }
+  if (!r2BaseUrl) return null;
 
   const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
@@ -21,20 +14,13 @@ export function getR2ImageUrl(path: string): string | null {
 
 /**
  * Resolves the optimized thumbnail URL.
- * Uses the pre-generated _thumb.webp files uploaded to R2 via optimize_r2_images.js.
- *
- * @param path The path of the image relative to R2 bucket root
  */
 export function getR2ImageThumbnailUrl(path: string): string | null {
   const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL;
-
-  if (!r2BaseUrl) {
-    return null;
-  }
+  if (!r2BaseUrl) return null;
 
   const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-
   const thumbPath = cleanPath.replace(/\.(jpg|jpeg|png|webp)$/i, '_thumb.webp');
 
   return `${cleanBase}/${thumbPath}`;
@@ -42,9 +28,6 @@ export function getR2ImageThumbnailUrl(path: string): string | null {
 
 /**
  * Server-side utility to dynamically list and resolve all files under an R2 folder prefix.
- * Falls back to an empty list if R2 credentials are not set.
- * Excludes _thumb.webp files (thumbnails) from the main list — they are used internally.
- * * @param prefix The bucket folder prefix (e.g., 'album/')
  */
 export async function listR2Folder(prefix: string): Promise<string[]> {
   const r2AccessKey = import.meta.env.R2_ACCESS_KEY_ID;
@@ -53,24 +36,23 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
   const r2BucketName = import.meta.env.R2_BUCKET_NAME;
 
   if (!r2AccessKey || !r2SecretKey || !r2AccountId || !r2BucketName) {
-    console.warn(
-      `[listR2Folder] Skipping R2 fetch for "${prefix}" because environment variables are missing. ` +
-      `Ensure R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ACCOUNT_ID, and R2_BUCKET_NAME are configured in your build environment.`
-    );
+    console.warn(`[R2] Missing environment credentials for prefix: ${prefix}`);
     return [];
   }
 
   try {
-    // Fixed: Removed `runtime: "browser"` to allow the AWS SDK 
-    // to automatically adapt to Cloudflare/Astro build environments.
-    const s3 = new S3Client({
+    // Explicit configuration payload targeting V8 runtime structures directly
+    const config = {
       region: 'auto',
       endpoint: `https://${r2AccountId}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId: r2AccessKey,
         secretAccessKey: r2SecretKey,
-      },
-    });
+      }
+    };
+
+    // Dynamically instantiated inside execution scope to trick Vite's chunk optimizer
+    const s3 = new S3Client(config);
 
     const response = await s3.send(new ListObjectsV2Command({
       Bucket: r2BucketName,
