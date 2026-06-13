@@ -3,8 +3,6 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
 
-import cloudflare from '@astrojs/cloudflare';
-
 // Load environment variables during Astro config loading
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 const r2BaseUrl = process.env.PUBLIC_R2_BASE_URL || env.PUBLIC_R2_BASE_URL;
@@ -56,12 +54,5 @@ export default defineConfig({
         }
       }
     }
-  },
-  output: 'server',
-  adapter: cloudflare({
-    imageService: 'passthrough',
-    platformProxy: {
-      enabled: true,
-    },
-  })
+  }
 });
