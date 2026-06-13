@@ -21,6 +21,12 @@ export function initMusicPlayer() {
   audio.src = songs[currentIndex].src;
   audio.volume = 0.5;
 
+  audio.addEventListener('ended', () => {
+    currentIndex = (currentIndex + 1) % songs.length;
+    audio.src = songs[currentIndex].src;
+    playTrack();
+  });
+
   function playTrack() {
     audio.play().then(() => {
       isPlaying = true;
