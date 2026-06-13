@@ -21,20 +21,20 @@ const { events } = Astro.props;
     </div>
 
     <div class="relative">
-      <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-[1px] bg-wedding-gold/30 -translate-x-1/2"></div>
+      <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-wedding-gold/30 -translate-x-1/2"></div>
 
-      <div class="space-y-16">
+      <div class="space-y-12 md:space-y-16">
         {events.map((event, index) => (
-          <div class={`relative flex flex-col md:flex-row items-start ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`} data-aos="flip-left">
+          <div class={`relative flex items-center w-full ${index % 2 !== 0 ? 'justify-end' : 'justify-start'}`} data-aos="flip-left">
             
-            <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-wedding-gold rounded-full -translate-x-1/2 z-10 border-4 border-wedding-cream shadow-sm"></div>
+            <div class="absolute left-1/2 w-4 h-4 bg-wedding-gold rounded-full -translate-x-1/2 z-10 border-4 border-wedding-cream shadow-sm"></div>
 
             <div class={`ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
               <div class="bg-white p-6 rounded-lg shadow-sm border border-wedding-gold/10 hover:shadow-md transition-shadow duration-300">
                 <span class="font-philosopher text-wedding-gold font-bold tracking-tighter text-lg">
                   {event.date}
                 </span>
-                <h3 class="text-xl font-serif text-wedding-navy mt-2 mb-3">
+                <h3 class="text-base md:text-xl font-serif text-wedding-navy mt-1 mb-2 md:mt-2 md:mb-3">
                   {event.title}
                 </h3>
                 <p class="text-wedding-navy/70 font-serif italic text-sm leading-relaxed">

@@ -131,7 +131,6 @@
 .program-icon-svg {
   width: 18px;
   height: 18px;
-  fill: currentColor;
 }
 
 .program-tree-content {
@@ -140,6 +139,33 @@
   gap: 4px;
   text-align: left;
   padding-left: 16px;
+}
+
+@media (max-width: 767px) {
+  .program-tree-item--reverse .program-tree-time {
+    grid-column: 3;
+    text-align: left;
+    padding-right: 0;
+    padding-left: 16px;
+  }
+
+  .program-tree-item--reverse .program-tree-node {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .program-tree-item--reverse .program-tree-content {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: right;
+    padding-left: 0;
+    padding-right: 16px;
+    align-items: flex-end;
+  }
+
+  .program-tree-item--reverse .program-tree-location {
+    align-items: flex-end;
+  }
 }
 
 .program-tree-title {
