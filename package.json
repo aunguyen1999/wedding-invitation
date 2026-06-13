@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro build && astro preview",
+    "build": "astro build --force",
+    "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types"
   },
