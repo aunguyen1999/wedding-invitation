@@ -23,13 +23,12 @@ const {
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-gold/10">
-    <Image
-      src={decorImage as ImageMetadata}
+    <img
+      src={typeof decorImage === 'string' ? decorImage : decorImage.src}
       class="absolute -bottom-10 -left-10 w-40 md:w-64 opacity-40 z-0 select-none pointer-events-none"
       alt=""
       aria-hidden="true"
       loading="lazy"
-      inferSize={true}
     />
   <div class="container mx-auto px-6 z-10">
     <div class="flex flex-col md:flex-row items-center gap-16">
@@ -62,10 +61,9 @@ const {
 
       <div class="flex-1 relative group">
         <div class="relative z-10 border-[16px] border-white shadow-2xl overflow-hidden rounded-t-[200px] aspect-[3/4]">
-          <Image
-            src={heroImage as ImageMetadata}
+          <img
+            src={typeof heroImage === 'string' ? heroImage : heroImage.src}
             alt="Wedding Portrait"
-            inferSize={true}
             class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
           />
         </div>
