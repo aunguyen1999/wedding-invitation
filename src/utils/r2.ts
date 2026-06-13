@@ -14,13 +14,9 @@ export function getR2ImageUrl(path: string): string | null {
     return null;
   }
 
-  if (r2BaseUrl) {
-    const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    return `${cleanBase}/${cleanPath}`;
-  }
-  
-  return null;
+  const cleanBase = r2BaseUrl.endsWith('/') ? r2BaseUrl.slice(0, -1) : r2BaseUrl;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${cleanBase}/${cleanPath}`;
 }
 
 /**
@@ -48,8 +44,7 @@ export function getR2ImageThumbnailUrl(path: string): string | null {
  * Server-side utility to dynamically list and resolve all files under an R2 folder prefix.
  * Falls back to an empty list if R2 credentials are not set.
  * Excludes _thumb.webp files (thumbnails) from the main list — they are used internally.
- * 
- * @param prefix The bucket folder prefix (e.g., 'album/')
+ * * @param prefix The bucket folder prefix (e.g., 'album/')
  */
 export async function listR2Folder(prefix: string): Promise<string[]> {
   const r2AccessKey = import.meta.env.R2_ACCESS_KEY_ID;
@@ -58,10 +53,16 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
   const r2BucketName = import.meta.env.R2_BUCKET_NAME;
 
   if (!r2AccessKey || !r2SecretKey || !r2AccountId || !r2BucketName) {
+    console.warn(
+      `[listR2Folder] Skipping R2 fetch for "${prefix}" because environment variables are missing. ` +
+      `Ensure R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ACCOUNT_ID, and R2_BUCKET_NAME are configured in your build environment.`
+    );
     return [];
   }
 
   try {
+    // Fixed: Removed `runtime: "browser"` to allow the AWS SDK 
+    // to automatically adapt to Cloudflare/Astro build environments.
     const s3 = new S3Client({
       region: 'auto',
       endpoint: `https://${r2AccountId}.r2.cloudflarestorage.com`,
@@ -69,7 +70,6 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
         accessKeyId: r2AccessKey,
         secretAccessKey: r2SecretKey,
       },
-      runtime: "browser",
     });
 
     const response = await s3.send(new ListObjectsV2Command({
@@ -92,4 +92,3 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
     return [];
   }
 }
-
