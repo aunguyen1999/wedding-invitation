@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Josefin+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-wedding-navy: #1a237e;
   --color-wedding-gold: #d4af37;
   --color-wedding-cream: #f5f5dc;
-  --font-serif: EB Garamond, serif;
-  --font-philosopher: EB Garamond, sans-serif;
-  --font-display: EB Garamond, serif;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-accent: 'Great Vibes', cursive;
+  --font-philosopher: 'Josefin Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
 }
 
 html, body {
@@ -16,11 +18,11 @@ html, body {
 }
 
 body {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
 }
 
 .t2-container {
