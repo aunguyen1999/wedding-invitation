@@ -22,6 +22,9 @@ import {
   groomProgram,
   vendorsData
 } from '@data/config';
+
+// Cache HTML at the Cloudflare Edge level for 1 week, serve stale for 1 week
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=604800');
 ---
 
 <MainLayout>

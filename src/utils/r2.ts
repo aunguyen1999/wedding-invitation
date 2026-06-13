@@ -29,7 +29,14 @@ export function getR2ImageThumbnailUrl(path: string): string | null {
 /**
  * Server-side utility to dynamically list and resolve all files under an R2 folder prefix.
  */
+const r2Cache: Record<string, { keys: string[], timestamp: number }> = {};
+const CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // 1 week
+
 export async function listR2Folder(prefix: string): Promise<string[]> {
+  const now = Date.now();
+  if (r2Cache[prefix] && (now - r2Cache[prefix].timestamp < CACHE_TTL)) {
+    return r2Cache[prefix].keys;
+  }
   const r2AccessKey = import.meta.env.R2_ACCESS_KEY_ID;
   const r2SecretKey = import.meta.env.R2_SECRET_ACCESS_KEY;
   const r2AccountId = import.meta.env.R2_ACCOUNT_ID;
@@ -78,6 +85,9 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
       })
       .map(key => getR2ImageUrl(key))
       .filter((url): url is string => url !== null);
+
+    r2Cache[prefix] = { keys: resolvedUrls, timestamp: now };
+    return resolvedUrls;
   } catch (err) {
     console.error(`Failed to list objects in R2 folder "${prefix}":`, err);
     return [];
