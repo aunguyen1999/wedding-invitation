@@ -2,8 +2,7 @@
 	"compatibility_date": "2026-06-12",
 	"compatibility_flags": [
 		"global_fetch_strictly_public",
-		"nodejs_compat",
-		"compatibility_flags"
+		"nodejs_compat"
 	],
 	"name": "wedding-invitation",
 	"main": "@astrojs/cloudflare/entrypoints/server",
@@ -14,7 +13,7 @@
 	"kv_namespaces": [
 		{
 			"binding": "SESSION",
-			"id": "wedding-session-kv-prod"
+			"id": "deaebc3a271542389cc78b45504fd7ba"
 		}
 	],
 	"observability": {
