@@ -10,7 +10,7 @@ console.log(decorFlower);
 <section class="py-24 bg-wedding-navy text-wedding-cream relative overflow-hidden" id="guestbook">
   <div class="absolute -top-20 -left-20 w-80 opacity-10 pointer-events-none invert rotate-45">
     {typeof decorFlower === 'string' ? (
-      <img src={decorFlower} alt="decor" />
+      <Image src={decorFlower} alt="decor" quality="low" inferSize />
     ) : (
       <Image src={decorFlower} alt="decor" quality="low" />
     )}

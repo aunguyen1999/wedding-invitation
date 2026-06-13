@@ -41,12 +41,14 @@ const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || '';
               href={src} 
               class="block relative group overflow-hidden rounded-sm shadow-sm"
             >
-              <img 
-                  src={src}
+              <Image 
+                  src={cdnThumbUrl}
                   alt="Wedding photo"
                   class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
                   loading="lazy"
                   decoding="async"
+                  fetchpriority="low"
+                  inferSize={true}
                 />
               {index === limit - 1 && hiddenImages.length > 0 && (
                 <div class="absolute inset-0 bg-wedding-navy/60 flex flex-col items-center justify-center text-wedding-cream">
@@ -67,12 +69,14 @@ const r2BaseUrl = import.meta.env.PUBLIC_R2_BASE_URL || '';
             <a 
               href={src} 
             >
-               <img 
-                  src={src}
+               <Image 
+                  src={cdnThumbUrl}
                   alt="Wedding photo"
                   class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
                   loading="lazy"
                   decoding="async"
+                  fetchpriority="low"
+                  inferSize={true}
                 />
             </a>
           )

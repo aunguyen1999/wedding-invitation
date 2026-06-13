@@ -11,7 +11,7 @@ const coverImg = getR2ImageUrl('hero-portrait.webp');
   <div class="split-panel left-panel">
     <div class="cover-bg-wrap">
       {coverImg && (
-        <img
+        <Image
           src={coverImg}
           alt=""
           class="cover-bg-image"
@@ -19,6 +19,7 @@ const coverImg = getR2ImageUrl('hero-portrait.webp');
           fetchpriority="high"
           decoding="async"
           aria-hidden="true"
+          inferSize={true}
         />
       )}
       <div class="cover-overlay"></div>
@@ -29,7 +30,7 @@ const coverImg = getR2ImageUrl('hero-portrait.webp');
   <div class="split-panel right-panel">
     <div class="cover-bg-wrap">
       {coverImg && (
-        <img
+        <Image
           src={coverImg}
           alt=""
           class="cover-bg-image"
@@ -37,6 +38,7 @@ const coverImg = getR2ImageUrl('hero-portrait.webp');
           fetchpriority="high"
           decoding="async"
           aria-hidden="true"
+          inferSize={true}
         />
       )}
       <div class="cover-overlay"></div>
