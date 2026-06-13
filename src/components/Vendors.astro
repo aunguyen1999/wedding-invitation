@@ -1,0 +1,78 @@
+---
+import '@styles/vendors.css';
+import { Image } from 'astro:assets';
+import vendorPlaceholder from '@images/vendor-placeholder.png';
+import phieuStudioLogo from '@images/phieu-studio.jpg';
+import abcSoundLogo from '@images/abc-sound.jpg';
+import tamPhotographyLogo from '@images/tam-photography.jpg';
+
+const vendors = [
+  { role: 'Studio Ảnh Cưới', name: 'Phiêu Studio', logo: phieuStudioLogo, url: 'https://www.facebook.com/phieustudiohcm' },
+  { role: 'Nhà Hàng', name: 'Nhà hàng Trầu Cau', logo: '', url: 'tel:0901234567' },
+  { role: 'Nhà Hàng', name: 'Nhà hàng Kim Cúc', logo: '', url: '' },
+  { role: 'Chụp Hình', name: 'Thái Minh Tâm', logo: tamPhotographyLogo, url: 'https://www.facebook.com/taam74' },
+  { role: 'Rạp Cưới', name: 'Hoàng Gia Decor', logo: '', url: 'tel:0987654321' },
+  { role: 'Rạp Cưới', name: 'Quốc Thái Decor', logo: '', url: 'https://www.facebook.com/linh.mai.265123' },
+  { role: 'Âm Thanh Ánh Sáng', name: 'Âm Thanh Ánh Sáng ABC', logo: abcSoundLogo, url: 'https://www.facebook.com/linh.mai.265123' },
+];
+---
+
+<section class="vendors-section" id="vendors">
+  <div class="container mx-auto px-6 max-w-5xl" data-aos="fade-up">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-sans text-wedding-navy tracking-[0.3em] uppercase">Đơn Vị Đồng Hành</h2>
+    </div>
+    
+    <div class="brand-marquee-container">
+      <div class="brand-marquee-track">
+        {vendors.map(vendor => {
+          const Element = vendor.url ? 'a' : 'div';
+          return (
+          <Element 
+            href={vendor.url || undefined}
+            target={vendor.url?.startsWith('http') ? '_blank' : undefined}
+            rel={vendor.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="brand-item"
+          >
+
+            <div class="brand-placeholder-wrapper flex flex-col items-center justify-center gap-3">
+              {vendor.logo ? (
+                <Image src={vendor.logo} alt={vendor.name} class="brand-logo" />
+              ) : (
+                <Image src={vendorPlaceholder} alt="Vendor Placeholder" class="brand-logo" />
+              )}
+                <div class="flex flex-col items-center justify-center">
+                  <span class="brand-name">{vendor.name}</span>
+                  <span class="brand-role">{vendor.role}</span>
+                </div>
+              </div>
+          </Element>
+        )})}
+        {/* Duplicate items to create infinite scroll effect */}
+        {vendors.map(vendor => {
+          const Element = vendor.url ? 'a' : 'div';
+          return (
+          <Element 
+            href={vendor.url || undefined}
+            target={vendor.url?.startsWith('http') ? '_blank' : undefined}
+            rel={vendor.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="brand-item"
+            aria-hidden="true"
+          >
+            <div class="brand-placeholder-wrapper flex flex-col items-center justify-center gap-3">
+              {vendor.logo ? (
+                <Image src={vendor.logo} alt={vendor.name} class="brand-logo" />
+              ) : (
+                <Image src={vendorPlaceholder} alt="Vendor Placeholder" class="brand-logo" /> 
+              )}
+              <div class="flex flex-col items-center justify-center">
+                <span class="brand-name">{vendor.name}</span>
+                <span class="brand-role">{vendor.role}</span>
+              </div>
+            </div>
+          </Element>
+        )})}
+      </div>
+    </div>
+  </div>
+</section>

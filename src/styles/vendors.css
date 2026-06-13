@@ -1,0 +1,119 @@
+.vendors-section {
+  padding: 60px 0;
+  background-color: var(--color-wedding-cream);
+  overflow: hidden;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.brand-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  background: transparent;
+  padding: 20px 0;
+}
+
+/* Gradient fade at edges for smooth enter/exit */
+.brand-marquee-container::before,
+.brand-marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.brand-marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-wedding-cream), transparent);
+}
+.brand-marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-wedding-cream), transparent);
+}
+
+.brand-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.brand-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.brand-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 150px;
+  padding: 0 3rem;
+  opacity: 1;
+  transition: transform 0.4s ease;
+  cursor: default;
+  text-decoration: none;
+}
+
+.brand-item[href] {
+  cursor: pointer;
+}
+
+.brand-item:hover {
+  transform: scale(1.05);
+}
+
+.brand-logo {
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(26, 35, 126, 0.08);
+}
+
+.brand-text-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-wedding-navy);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.brand-role {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-wedding-gold);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .brand-item {
+    padding: 0 2rem;
+  }
+  .brand-logo {
+    height: 64px;
+    width: 64px;
+  }
+  .brand-name {
+    font-size: 1.3rem;
+  }
+}
