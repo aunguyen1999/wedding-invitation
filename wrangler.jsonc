@@ -2,7 +2,8 @@
 	"compatibility_date": "2026-06-12",
 	"compatibility_flags": [
 		"global_fetch_strictly_public",
-		"nodejs_compat"
+		"nodejs_compat",
+		"compatibility_flags"
 	],
 	"name": "wedding-invitation",
 	"main": "@astrojs/cloudflare/entrypoints/server",

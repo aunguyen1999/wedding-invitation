@@ -11,7 +11,6 @@ const r2BaseUrl = process.env.PUBLIC_R2_BASE_URL || env.PUBLIC_R2_BASE_URL;
 const allowedHost = process.env.ALLOWED_HOST || env.ALLOWED_HOST || 'localhost';
 
 // Prepare the base remote image whitelist
-const domains = [];
 const remotePatterns = [
   {
     protocol: 'https',
@@ -24,8 +23,6 @@ if (r2BaseUrl) {
   try {
     const r2Url = new URL(r2BaseUrl);
     const protocol = r2Url.protocol.replace(':', '');
-    
-    domains.push(r2Url.hostname);
     
     remotePatterns.push({
       protocol,
@@ -43,7 +40,6 @@ if (r2BaseUrl) {
 export default defineConfig({
   image: {
     service: passthroughImageService(),
-    domains,
     remotePatterns,
   },
 
