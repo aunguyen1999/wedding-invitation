@@ -1,0 +1,59 @@
+---
+import '@styles/countdown.css';
+
+interface Props {
+  targetDate: string;
+  title?: string;
+}
+
+const { targetDate, title = "Đếm Ngược Tới Giờ G" } = Astro.props;
+---
+
+<section class="countdown-section" data-target={targetDate}>
+  <div class="countdown-bg-overlay"></div>
+  <div class="container mx-auto px-6 max-w-4xl relative z-10" data-aos="zoom-in">
+    <div class="text-center mb-12 relative flex justify-center items-center">
+      <div class="countdown-decor-line left"></div>
+      {title && <h3 class="countdown-title">{title}</h3>}
+      <div class="countdown-decor-line right"></div>
+    </div>
+    
+    <div class="countdown-container">
+      <div class="countdown-item-wrapper">
+        <div class="countdown-item">
+          <span class="countdown-value" id="countdown-days">00</span>
+          <span class="countdown-label">Ngày</span>
+        </div>
+      </div>
+      
+      <div class="countdown-separator">:</div>
+      
+      <div class="countdown-item-wrapper">
+        <div class="countdown-item">
+          <span class="countdown-value" id="countdown-hours">00</span>
+          <span class="countdown-label">Giờ</span>
+        </div>
+      </div>
+      
+      <div class="countdown-separator">:</div>
+      
+      <div class="countdown-item-wrapper">
+        <div class="countdown-item">
+          <span class="countdown-value" id="countdown-mins">00</span>
+          <span class="countdown-label">Phút</span>
+        </div>
+      </div>
+      
+      <div class="countdown-separator">:</div>
+      
+      <div class="countdown-item-wrapper">
+        <div class="countdown-item">
+          <span class="countdown-value" id="countdown-secs">00</span>
+          <span class="countdown-label">Giây</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../scripts/countdown.js"></script>

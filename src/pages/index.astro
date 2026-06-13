@@ -11,6 +11,7 @@ import Cover from '@components/Cover.astro';
 import Guestbook from '@components/Guestbook.astro';
 import Program from '@components/Program.astro';
 import MusicPlayer from '@components/MusicPlayer.astro';
+import Countdown from '@components/Countdown.astro';
 
 const groomBride = getR2ImageUrl('groom-bride.webp');
 const invitationDecor = getR2ImageUrl('invitation-decor.webp');
@@ -81,8 +82,6 @@ const milestones = [
   }
 ];
 
-const albumPhotos = Array.from({ length: 20 }, (_, i) => `photo-seed-${i}`);
-
 const brideProgram = [
   {
     time: "09:00",
@@ -149,6 +148,8 @@ const groomProgram = [
 		slogan={myWedding.slogan}
 	/>
 
+  <Countdown targetDate="2026-07-19T09:00:00" />
+
 	<Biography 
 		role="Chú rể"
 		name={weddingData.groom.name}
@@ -179,7 +180,7 @@ const groomProgram = [
 		groomDate="19 . 07 . 2026"
 	/>
 
-	<Album seeds={albumPhotos} />
+	<Album/>
 
   <Guestbook />
   
