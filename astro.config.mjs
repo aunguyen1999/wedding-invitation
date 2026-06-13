@@ -15,9 +15,9 @@ const domains = [];
 const remotePatterns = [
   {
     protocol: 'https',
-    hostname: '*',
+    hostname: '*.auyenwedding.com',
     pathname: '/**',
-  }
+  },
 ];
 
 if (r2BaseUrl) {
