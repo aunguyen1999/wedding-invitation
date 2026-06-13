@@ -1,0 +1,16 @@
+/* PhotoSwipe Custom Overrides */
+.pswp__button--arrow {
+  opacity: 0.3 !important;
+  transform: scale(0.6) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+.pswp__button--arrow:hover {
+  opacity: 0.7 !important;
+  transform: scale(0.7) !important;
+}
+
+/* Hide PhotoSwipe image counter (e.g. "1 / 10") */
+.pswp__counter {
+  display: none !important;
+}
