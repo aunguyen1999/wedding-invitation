@@ -1,4 +1,4 @@
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3/dist-es/index.browser.js';
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 /**
  * Resolves the absolute Cloudflare R2 URL for a given asset path.
