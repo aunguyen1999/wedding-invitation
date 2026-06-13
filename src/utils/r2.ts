@@ -69,6 +69,7 @@ export async function listR2Folder(prefix: string): Promise<string[]> {
         accessKeyId: r2AccessKey,
         secretAccessKey: r2SecretKey,
       },
+      runtime: "browser",
     });
 
     const response = await s3.send(new ListObjectsV2Command({
