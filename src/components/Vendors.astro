@@ -20,8 +20,8 @@ const { vendors } = Astro.props;
       <h2 class="text-3xl font-sans text-wedding-navy tracking-[0.3em] uppercase">Đơn Vị Đồng Hành</h2>
     </div>
     
-    <div class="brand-marquee-container">
-      <div class="brand-marquee-track">
+    <div class="brand-slider-container relative w-full px-4">
+      <div class="brand-slider-track flex overflow-x-auto snap-x snap-mandatory gap-8 py-8 items-center scroll-smooth">
         {vendors.map(vendor => {
           const Element = vendor.url ? 'a' : 'div';
           return (
@@ -29,11 +29,11 @@ const { vendors } = Astro.props;
             href={vendor.url || undefined}
             target={vendor.url?.startsWith('http') ? '_blank' : undefined}
             rel={vendor.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
-            class="brand-item"
+            class="brand-item snap-center shrink-0"
+            draggable="false"
           >
-
-            <div class="brand-placeholder-wrapper flex flex-col items-center justify-center gap-3">
-                <Image src={vendor.logo} alt={vendor.name} class="brand-logo" />
+            <div class="brand-placeholder-wrapper flex flex-col items-center justify-center gap-3 select-none">
+                <Image src={vendor.logo} alt={vendor.name} class="brand-logo" draggable="false" />
                 <div class="flex flex-col items-center justify-center">
                   <span class="brand-name">{vendor.name}</span>
                   <span class="brand-role">{vendor.role}</span>
@@ -41,27 +41,14 @@ const { vendors } = Astro.props;
               </div>
           </Element>
         )})}
-        {/* Duplicate items to create infinite scroll effect */}
-        {vendors.map(vendor => {
-          const Element = vendor.url ? 'a' : 'div';
-          return (
-          <Element 
-            href={vendor.url || undefined}
-            target={vendor.url?.startsWith('http') ? '_blank' : undefined}
-            rel={vendor.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
-            class="brand-item"
-            aria-hidden="true"
-          >
-            <div class="brand-placeholder-wrapper flex flex-col items-center justify-center gap-3">
-              <Image src={vendor.logo} alt={vendor.name} class="brand-logo" />
-              <div class="flex flex-col items-center justify-center">
-                <span class="brand-name">{vendor.name}</span>
-                <span class="brand-role">{vendor.role}</span>
-              </div>
-            </div>
-          </Element>
-        )})}
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { initVendorSlider } from '@scripts/vendors.js';
+  
+  document.addEventListener('astro:page-load', initVendorSlider);
+  initVendorSlider();
+</script>

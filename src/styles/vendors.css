@@ -5,50 +5,21 @@
   border-top: 1px solid rgba(212, 175, 55, 0.2);
 }
 
-.brand-marquee-container {
+.brand-slider-container {
   width: 100%;
-  overflow: hidden;
   position: relative;
-  display: flex;
   background: transparent;
-  padding: 20px 0;
 }
 
-/* Gradient fade at edges for smooth enter/exit */
-.brand-marquee-container::before,
-.brand-marquee-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 80px;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-.brand-marquee-container::before {
-  left: 0;
-  background: linear-gradient(to right, var(--color-wedding-cream), transparent);
-}
-.brand-marquee-container::after {
-  right: 0;
-  background: linear-gradient(to left, var(--color-wedding-cream), transparent);
+.brand-slider-track {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  /* For smooth touch scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
-.brand-marquee-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  animation: marquee 17s linear infinite;
-  will-change: transform;
-}
-
-.brand-marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.brand-slider-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .brand-item {
@@ -57,8 +28,10 @@
   align-items: center;
   min-width: 150px;
   padding: 0 3rem;
-  opacity: 1;
-  transition: transform 0.4s ease;
+  opacity: 0.3;
+  transform: scale(0.8);
+  filter: grayscale(100%);
+  transition: all 0.5s ease;
   cursor: default;
   text-decoration: none;
 }
@@ -67,8 +40,11 @@
   cursor: pointer;
 }
 
+.brand-item.active,
 .brand-item:hover {
+  opacity: 1;
   transform: scale(1.05);
+  filter: grayscale(0%);
 }
 
 .brand-logo {
