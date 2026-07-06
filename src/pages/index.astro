@@ -2,7 +2,6 @@
 import MainLayout from '@layouts/MainLayout.astro';
 import Hero from '@components/Hero.astro';
 import Biography from '@components/Biography.astro';
-import Story from '@components/Story.astro';
 import Timeline from '@components/Timeline.astro';
 import Album from '@components/Album.astro';
 
@@ -16,7 +15,6 @@ import Vendors from '@components/Vendors.astro';
 import { 
   myWedding, 
   weddingData, 
-  stories, 
   milestones, 
   brideProgram, 
   groomProgram,
@@ -51,12 +49,6 @@ import {
 		image={weddingData.bride.photo}
 		reverse={true}
 	/>
-
-	{stories.map((s) => (
-		<Story title={s.title} seed={s.seed} reverse={s.reverse}>
-			<p>{s.content}</p>
-		</Story>
-	))}
 
 	<Timeline events={milestones} />
 
