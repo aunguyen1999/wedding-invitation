@@ -4,10 +4,11 @@ const songs = [
   { src: "https://media.auyenwedding.com/music/song3.mp3" }
 ];
 
-let currentIndex = Math.floor(Math.random() * songs.length) ;
+let currentIndex = Math.floor(Math.random() * songs.length);
 let isPlaying = false;
 let audio = null;
 let noteInterval = null;
+let wasPlayingBeforeHide = false;
 
 export function initMusicPlayer() {
   const container = document.getElementById('wedding-music-player');
@@ -114,6 +115,20 @@ export function initMusicPlayer() {
   window.addEventListener('play-wedding-music', () => {
     if (!isPlaying) {
       playTrack();
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (isPlaying) {
+        wasPlayingBeforeHide = true;
+        pauseTrack();
+      }
+    } else {
+      if (wasPlayingBeforeHide) {
+        wasPlayingBeforeHide = false;
+        playTrack();
+      }
     }
   });
 }
